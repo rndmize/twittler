@@ -3,23 +3,43 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <style type="text/css">
+      .tweet { background: #eef8ff; width: 640px; border: 8px solid #ecf6fd; border-radius: 6px; margin: 6px; padding: 0px 8px;}
+      .tweet p:first-child { margin-bottom: 0; font-size: 14px; }
+      .tweet span { color: #999; float: right; font-size: 11px; font-family: helvetica, arial; }
+      .tweet p:last-child { margin-top: 4px; font-size: 18px; font-family: helvetica, arial;}
+    </style>
   </head>
   <body>
+    <h1>TWITTLER THINGY</h1>
+    <button type="button">Get Tweets</button>
     <script>
 
       $(document).ready(function(){
+
         var $body = $('body');
         $body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+        var pointer = 0;
 
+        var display = function() {
+
+          var index = pointer + 1;
+          pointer = streams.home.length - 1;
+
+          while(index <= pointer) {
+            var tweet = streams.home[index];
+            var $tweet = $('<div class="tweet"></div>');
+//            $tweet.text('@' + tweet.user + ': ' + tweet.message);
+            $tweet.prependTo($body);
+            $(".tweet").first().append($("<p>@" + tweet.user + "<span>" + tweet.created_at + "</span></p>"));
+            $(".tweet").first().append($("<p>" + tweet.message + "</p>"));
+            index += 1;
+          }
+        };
+
+        display();
+        setInterval(function(){display()}, 2000);
       });
 
     </script>

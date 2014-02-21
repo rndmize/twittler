@@ -4,21 +4,21 @@
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
     <style type="text/css">
-      .tweet { background: #eef8ff; width: 640px; border: 8px solid #ecf6fd; border-radius: 6px; margin: 6px; padding: 0px 8px;}
+      .wrapper { margin: 20px auto; width: 960px; }
+      .tweet { background: #eef8ff; width: 640px; border: 8px solid #eef8ff; border-radius: 6px; margin: 6px; padding: 0px 8px; }
       .tweet p:first-child { margin-bottom: 0; font-size: 14px; }
-      .tweet span { color: #999; float: right; font-size: 11px; font-family: helvetica, arial; }
-      .tweet p:last-child { margin-top: 4px; font-size: 18px; font-family: helvetica, arial;}
+      .tweet span.time { color: #999; float: right; font-size: 11px; font-family: helvetica, arial; }
+      .tweet p:last-child { margin-top: 4px; font-size: 18px; font-family: helvetica, arial; }
     </style>
   </head>
   <body>
-    <h1>TWITTLER THINGY</h1>
-    <button type="button">Get Tweets</button>
     <script>
 
       $(document).ready(function(){
 
         var $body = $('body');
-        $body.html('');
+        $body.html('<div class="wrapper"></div>');
+        var $wrapper = $('.wrapper');
 
         var pointer = 0;
 
@@ -27,19 +27,27 @@
           var index = pointer + 1;
           pointer = streams.home.length - 1;
 
+
           while(index <= pointer) {
             var tweet = streams.home[index];
             var $tweet = $('<div class="tweet"></div>');
-//            $tweet.text('@' + tweet.user + ': ' + tweet.message);
-            $tweet.prependTo($body);
-            $(".tweet").first().append($("<p>@" + tweet.user + "<span>" + tweet.created_at + "</span></p>"));
+
+            $tweet.prependTo($wrapper);
+            $(".tweet").first().append($("<p><span class='user " + tweet.user + "'>@" + tweet.user + "</span><span class='time'>" + tweet.created_at + "</span></p>"));
             $(".tweet").first().append($("<p>" + tweet.message + "</p>"));
             index += 1;
           }
+
+          $("span.user").click(function() {
+            $(".tweet").css("display", "none");
+//            $("span.user").each()
+//            if ($(this).html() === $("span.user").html())
+          });
         };
 
         display();
-        setInterval(function(){display()}, 2000);
+        // setInterval(function(){display()}, 2000);
+
       });
 
     </script>

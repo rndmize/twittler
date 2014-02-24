@@ -13,6 +13,7 @@
   </head>
   <body>
     <script>
+    var usr;
 
       $(document).ready(function(){
 
@@ -30,6 +31,15 @@
 
           while(index <= pointer) {
             var tweet = streams.home[index];
+
+            if (usr !== undefined) {
+              if (tweet.user !== usr) {
+                index += 1;
+                continue;
+              }
+            }
+
+
             var $tweet = $('<div class="tweet"></div>');
 
             $tweet.prependTo($wrapper);
@@ -39,14 +49,16 @@
           }
 
           $("span.user").click(function() {
-            $(".tweet").css("display", "none");
-//            $("span.user").each()
-//            if ($(this).html() === $("span.user").html())
+            usr = $(this)[0].className;
+            usr = usr.substr(5);
+            $(".user").not("." + usr).parent().parent().css({ "display": "none"});
+            $(usr).parent().parent().css({ "display": "block"})
           });
+
         };
 
         display();
-        // setInterval(function(){display()}, 2000);
+         setInterval(function(){display()}, 2000);
 
       });
 
